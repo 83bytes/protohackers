@@ -1,0 +1,11 @@
+# Rust build output
+target/
+
+# Rust language server
+.rust-analyzer/
+
+# Cargo backup files
+
+# IDE/editor files
+.idea/
+.vscode/
