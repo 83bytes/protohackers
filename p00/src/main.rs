@@ -25,50 +25,32 @@ fn main() {
 fn handle_connection(mut stream: TcpStream) {
     let mut buffer = [0u8; 1024];
 
-    // loop {
-    //     match stream.read(&mut buffer) {
-    //         Ok(0) => {
-    //             println!("Client Disconnected");
-    //             break;
-    //         }
-    //         Ok(n) => {
-    //             println!("read {n} bytes");
+    loop {
+        match stream.read(&mut buffer) {
+            Ok(0) => {
+                println!("Client Disconnected");
+                break;
+            }
+            Ok(n) => {
+                println!("read {n} bytes");
                 
-    //             if let Err(e) = stream.write_all(&buffer[..n]) {
-    //                 eprintln!("error in sending {e}");
-    //                 break;
-    //             } 
-    //         }
-    //         Err(e) => {
-    //             eprintln!("Read error: {e}");
-    //             break;
-    //         }
-    //     }
-    // }
-
-
-    // This works. but it will not keep doing this. It will stop after one round.
-
-    // match stream.read(&mut buffer) {
-    //     Ok(n) => {
-    //         match stream.write_all(&buffer[..n]) {
-    //             Ok(_) => println!("write ok"),
-    //             Err(e) => eprintln!("Error {e}"),
-    //         }
-    //         println!("connection Established!! data -> {}", String::from_utf8_lossy(&buffer));
-    //     },
-    //     Err(e) => {
-    //         eprintln!("Something wrong with data: {e}")
-    //     }
-    // }
-
-
-    
+                if let Err(e) = stream.write_all(&buffer[..n]) {
+                    eprintln!("error in sending {e}");
+                    break;
+                } 
+            }
+            Err(e) => {
+                eprintln!("Read error: {e}");
+                break;
+            }
+        }
+    }
 
     // let mut writer =  stream.try_clone().unwrap();
     // std::io::copy(&mut stream, &mut writer);
 }
 
-
-
-// next steps. use tokio and get a proper thingy
+// next steps.
+// 1 thread per connection model
+// thread pool model
+// async with tokio
